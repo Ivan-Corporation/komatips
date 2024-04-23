@@ -1,8 +1,7 @@
 import { ethers } from "ethers"
 import "./Buy.css";
-import { Input } from "@web3uikit/core";
-import { User } from '@web3uikit/icons'
-
+import { Button, Card, Illustration, Input } from "@web3uikit/core";
+import { User, MessageCircle } from '@web3uikit/icons'
 
 
 const Buy = ({ state }) => {
@@ -20,30 +19,69 @@ const Buy = ({ state }) => {
     window.location.reload();
   }
   return (
-    <div className="center">
-      <h1>Thanks</h1>
-      <form onSubmit={buyKomaTips}>
-        <div className="">
-          <Input
-            label="Name"
-            name=""
-            onBlur={function noRefCheck() { }}
-            onChange={function noRefCheck() { }}
-            prefixIcon={<User />}
-            required="required"
-            id="name"
-          />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
 
-        </div>
-        <div className="">
-          <input type="text" required="required" id="message" />
-          <span>Message</span>
-        </div>
-        <div className="inputbox">
-          <input type="submit" value="Pay" disabled={!state.contract} />
-        </div>
-      </form>
+      >
+        <Card
+          description="Required Metamask wallet"
+          onClick={function noRefCheck() { }}
+          setIsSelected={function noRefCheck() { }}
+          title=""
+          tooltipText={<span style={{ width: 200 }}>Fund a smart contract chest with cryptogold!</span>}
+        >
+          <div>
+            <Illustration
+              height="180px"
+              logo="chest"
+              width="100%"
+            />
+          </div>
 
+          <form onSubmit={buyKomaTips}>
+            <div className="" style={{ marginBottom: '30px' }}>
+              <div>Name</div>
+              <Input
+                label=""
+                className="input_text"
+                name=""
+                onBlur={function noRefCheck() { }}
+                onChange={function noRefCheck() { }}
+                prefixIcon={<User />}
+                required="required"
+                id="name"
+              />
+            </div>
+
+            <div className="" style={{ marginBottom: '30px' }}>
+              <div>Message</div>
+              <Input
+                label=""
+                className="input_text"
+                name=""
+                onBlur={function noRefCheck() { }}
+                onChange={function noRefCheck() { }}
+                prefixIcon={<MessageCircle />}
+                required="required"
+                id="message"
+              />
+            </div>
+
+
+            <Button
+              color="blue"
+              iconLayout="leading"
+              isFullWidth
+              size="large"
+              text="Pay"
+              theme="colored"
+              type="submit"
+              disabled={!state.contract}
+            />
+          </form>
+
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Memos.css"
 import { ethers } from "ethers";
+import { Avatar, Table, Tag } from "@web3uikit/core";
 
 const Memos = ({ state }) => {
   const [memos, setMemos] = useState([]);
@@ -15,8 +16,46 @@ const Memos = ({ state }) => {
   }, [contract])
   return (
     <div className="container-fluid">
-      <h3 style={{ textAlign: "center", marginTop: "20px" }}>Messages</h3>
-      <table>
+      <h3 style={{ textAlign: "center", marginTop: "50px" }}>Messages</h3>
+
+      <Table
+
+        columnsConfig="200px 200px 200px 200px 300px 100%"
+        data={
+          memos?.map((memo) => {
+            return (
+              [
+                <Avatar isRounded
+                  size={36}
+                  text={memo.name}
+                  characterAmount={2}
+                  theme="letters" />,
+                ethers.utils.formatEther(memo.value._hex),
+                <Tag color="blue" text={memo.name} />,
+                new Date(memo.timestamp * 1000).toLocaleString(),
+                memo.message,
+                memo.from
+              ]
+            )
+          })
+
+
+        }
+        header={[
+          '',
+          <span>Value</span>,
+          <span>Name</span>,
+          <span>Date</span>,
+          <span>Message</span>,
+          <span>Account</span>,
+
+        ]}
+        maxPages={100}
+        pageSize={10}
+      />
+
+
+      {/* <table>
         <tbody >
           {memos.map((memo) => {
             return (
@@ -88,7 +127,7 @@ const Memos = ({ state }) => {
             );
           })}
         </tbody>
-      </table>
+      </table> */}
     </div>
   );
 }
