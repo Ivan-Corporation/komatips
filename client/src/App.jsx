@@ -1,67 +1,74 @@
-import { useState,useEffect } from 'react'
-import abi from "./contractJson/chai.json"
-import {ethers} from "ethers"
+import { useState, useEffect } from 'react'
+import abi from "./contractJson/komatips.json"
+import { ethers } from "ethers"
 import Memos from './components/Memos'
 import Buy from './components/Buy'
-import chai from "./chai.png";
 import './App.css'
+import { Avatar } from '@web3uikit/core'
 
 function App() {
-  const [state,setState]=useState({
-    provider:null,
-    signer:null,
-    contract:null
+  const [state, setState] = useState({
+    provider: null,
+    signer: null,
+    contract: null
   })
-  const [account,setAccount]=useState('Not connected');
-  useEffect(()=>{
-    const template=async()=>{
-   
-      const contractAddress="0x29b5054AA9332E6E0C19A0A3252FdCa98f7a3E2B";
-      const contractABI=abi.abi;
+  const [account, setAccount] = useState('Not connected');
+  useEffect(() => {
+    const template = async () => {
+
+      const contractAddress = "0xCDb23CF7B56328F304D61cb91F2a8df076c30839";
+      const contractABI = abi.abi;
       //Metamask part
       //1. In order do transactions on goerli testnet
       //2. Metmask consists of infura api which actually help in connectig to the blockhain
-      try{
+      try {
 
-        const {ethereum}=window;
+        const { ethereum } = window;
         const account = await ethereum.request({
-          method:"eth_requestAccounts"
+          method: "eth_requestAccounts"
         })
- 
-        window.ethereum.on("accountsChanged",()=>{
-         window.location.reload()
+
+        window.ethereum.on("accountsChanged", () => {
+          window.location.reload()
         })
         setAccount(account);
         const provider = new ethers.providers.Web3Provider(ethereum);//read the Blockchain
-        const signer =  provider.getSigner(); //write the blockchain
-        
+        const signer = provider.getSigner(); //write the blockchain
+
         const contract = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         )
         console.log(contract)
-      setState({provider,signer,contract});
-       
-      }catch(error){
+        setState({ provider, signer, contract });
+
+      } catch (error) {
         console.log(error)
       }
     }
     template();
-  },[])
+  }, [])
   return (
-    <div >
-    <img src={chai} className="img-fluid" alt=".." width="100%" />
-    <p style={{ marginTop: "10px", marginLeft: "5px" }}>
-      <small>Connected Account - {account}</small>
-    </p>
+    <div>
 
-    {console.log('state', state)}
-   
+      <div className='account_card'>
+        <Avatar
+          isRounded
+          size={60}
+          theme="image"
+        />
+        <div>Connected Account:
+          <div>{account}</div>
+        </div>
+      </div>
+
+      {console.log('state', state)}
+
       <Buy state={state} />
       <Memos state={state} />
-   
-  </div>
+
+    </div>
   )
 }
 
