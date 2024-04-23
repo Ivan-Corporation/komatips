@@ -94,7 +94,7 @@ function App() {
               onClick={() => window.open(`https://blockscan.com/address/${account[0]}?t=tx`, '_blank')}
               iconLayout="trailing"
               isTransparent
-              text="Book a demo"
+              text="Check my transactions"
               theme="custom"
             />
           </React.Fragment>

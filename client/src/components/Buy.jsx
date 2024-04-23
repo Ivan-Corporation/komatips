@@ -1,10 +1,16 @@
 import { ethers } from "ethers"
 import "./Buy.css";
 import { Button, Card, Illustration, Input } from "@web3uikit/core";
-import { User, MessageCircle } from '@web3uikit/icons'
-
+import { User, MessageCircle, Eth } from '@web3uikit/icons'
+import { useState } from "react";
 
 const Buy = ({ state }) => {
+
+  const [sendEthAmount, setSendEthAmount] = useState('')
+
+  const onChangeHandler = event => {
+    setSendEthAmount(event.target.value);
+  };
 
   const buyKomaTips = async (event) => {
     event.preventDefault();
@@ -12,7 +18,7 @@ const Buy = ({ state }) => {
     const name = document.querySelector("#name").value;
     const message = document.querySelector("#message").value;
     //const amount = document.querySelector("#amount").value;
-    const amount = { value: ethers.utils.parseEther("0.000001") }
+    const amount = { value: ethers.utils.parseEther(sendEthAmount) }
     const transaction = await contract.buyKomaTips(name, message, amount)
     await transaction.wait();
     alert("Transaction is successul");
@@ -64,6 +70,20 @@ const Buy = ({ state }) => {
                 prefixIcon={<MessageCircle />}
                 required="required"
                 id="message"
+              />
+            </div>
+
+            <div className="" style={{ marginBottom: '30px' }}>
+              <div>Value</div>
+              <Input
+                label=""
+                className="input_text"
+                name=""
+                value={sendEthAmount}
+                onChange={onChangeHandler}
+                prefixIcon={<Eth />}
+                required="required"
+
               />
             </div>
 

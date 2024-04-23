@@ -20,9 +20,9 @@ const Memos = ({ state }) => {
 
       <Table
 
-        columnsConfig="200px 200px 200px 200px 300px 100%"
+        columnsConfig="5% 15% 15% 15% 27% 25%"
         data={
-          memos?.map((memo) => {
+          memos?.slice().reverse().map((memo) => {
             return (
               [
                 <Avatar isRounded
@@ -33,8 +33,8 @@ const Memos = ({ state }) => {
                 ethers.utils.formatEther(memo.value._hex),
                 <Tag color="blue" text={memo.name} />,
                 new Date(memo.timestamp * 1000).toLocaleString(),
-                memo.message,
-                memo.from
+                memo?.message.length > 25 ? memo?.message.substring(0, 36) + '...' : memo.message,
+                memo.from?.substring(0, 16) + '....' + memo.from?.substring(memo.from?.length - 4)
               ]
             )
           })
