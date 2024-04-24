@@ -15,10 +15,23 @@ function App() {
     signer: null,
     contract: null
   })
+  const [metamaskFound, setMetamaskFound] = useState(false);
   const [account, setAccount] = useState('Not connected');
+
+
+
+
+  useEffect(() => {
+    if (window.ethereum) {
+      setMetamaskFound(true)
+    } else {
+      setMetamaskFound(false)
+    }
+
+  }, [])
+
   useEffect(() => {
     const template = async () => {
-
       const contractAddress = "0xCDb23CF7B56328F304D61cb91F2a8df076c30839";
       const contractABI = abi.abi;
       //Metamask part
@@ -27,13 +40,16 @@ function App() {
       try {
 
         const { ethereum } = window;
+
         const account = await ethereum.request({
           method: "eth_requestAccounts"
         })
 
+
         window.ethereum.on("accountsChanged", () => {
           window.location.reload()
         })
+
         setAccount(account);
         const provider = new ethers.providers.Web3Provider(ethereum);//read the Blockchain
         const signer = provider.getSigner(); //write the blockchain
@@ -48,6 +64,7 @@ function App() {
 
       } catch (error) {
         console.log(error)
+
       }
     }
     template();
@@ -70,6 +87,8 @@ function App() {
         >
 
           <React.Fragment key=".0">
+            {metamaskFound ?
+              <>
             <div className='account_card'>
               <Avatar
                 isRounded
@@ -91,12 +110,29 @@ function App() {
                 border: '1px solid white',
                 color: '#FFFFFF'
               }}
-              onClick={() => window.open(`https://blockscan.com/address/${account[0]}?t=tx`, '_blank')}
-              iconLayout="trailing"
-              isTransparent
-              text="Check my transactions"
-              theme="custom"
-            />
+                  onClick={account === "Not connected" ? () => ethereum.request({
+                    method: "eth_requestAccounts"
+                  }) : () => window.open(`https://blockscan.com/address/${account[0]}?t=tx`, '_blank')}
+                  iconLayout="trailing"
+                  isTransparent
+                  text={account === "Not connected" ? 'Connect to Metamask' : 'Check account transactions'}
+                  theme="custom"
+                />
+              </>
+              :
+              <Button
+                customize={{
+                  backgroundColor: 'transparent',
+                  border: '1px solid white',
+                  color: '#FFFFFF'
+                }}
+                onClick={() => window.open(`https://metamask.io/download/`, '_blank')}
+                iconLayout="trailing"
+                isTransparent
+                text="Download Metamask"
+                theme="custom"
+              />
+            }
           </React.Fragment>
 
         </Hero></div>

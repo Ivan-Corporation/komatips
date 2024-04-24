@@ -3,6 +3,7 @@ import "./Buy.css";
 import { Button, Card, Illustration, Input } from "@web3uikit/core";
 import { User, MessageCircle, Eth } from '@web3uikit/icons'
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const Buy = ({ state }) => {
 
@@ -19,13 +20,19 @@ const Buy = ({ state }) => {
     const message = document.querySelector("#message").value;
     //const amount = document.querySelector("#amount").value;
     const amount = { value: ethers.utils.parseEther(sendEthAmount) }
+
+
     const transaction = await contract.buyKomaTips(name, message, amount)
+    const id = toast.loading("Please wait tx...")
+
     await transaction.wait();
-    alert("Transaction is successul");
+    toast.update(id, { render: "Transaction is successul", type: "success", isLoading: false });
+    // alert("Transaction is successul");
     window.location.reload();
   }
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <ToastContainer />
       <div
 
       >
@@ -83,7 +90,8 @@ const Buy = ({ state }) => {
                 onChange={onChangeHandler}
                 prefixIcon={<Eth />}
                 required="required"
-
+                type="number"
+                min={0.000000000000000001}
               />
             </div>
 
