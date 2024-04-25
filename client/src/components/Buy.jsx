@@ -90,7 +90,7 @@ const Buy = ({ state }) => {
                 onChange={onChangeHandler}
                 prefixIcon={<Eth />}
                 required="required"
-                // type="number"
+                type="number"
               />
             </div>
 
